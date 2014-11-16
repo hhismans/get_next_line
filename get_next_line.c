@@ -6,7 +6,7 @@
 /*   By: hhismans <hhismans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/12 17:41:02 by hhismans          #+#    #+#             */
-/*   Updated: 2014/11/16 02:41:44 by hhismans         ###   ########.fr       */
+/*   Updated: 2014/11/16 03:19:25 by hhismans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-static int		str_process(char **line, char *str)
+static int		str_process(int const fd, char **line, char *str)
 {
 	if (ft_strchr(str, '\n'))
 	{
@@ -84,24 +84,27 @@ static int		buf_process(int const fd, char **line, char *str)
 
 int				get_next_line(int const fd, char **line)
 {
-	static char	str[BUFF_SIZE];
-	static int	first_step = 1;
+	static char	*str[256];
+	static int	first_step[256] = {0};
+	int i;
+	i = 0;
 
 	if (BUFF_SIZE > 8000000)
 	{
 		ft_putendl_fd("Error, BUFF_SIZE is too big", 2);
 		return (-1);
 	}
-	if (first_step)
+	if (!first_step[fd])
 	{
-		ft_bzero(str, BUFF_SIZE);
-		first_step = 0;
+		(str)[fd] = (char *)ft_memalloc(BUFF_SIZE);
+		first_step[fd] = 1;
 	}
-	if (str_process(line,str))
+	if (str_process(fd, line, str[fd]))
 	{
 		return (1);
 	}
-	if (buf_process(fd, line, str))
+	if (buf_process(fd, line, str[fd]))
 		return (1);
+	free(str[fd]);
 	return (0);
 }
