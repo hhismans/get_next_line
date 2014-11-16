@@ -6,7 +6,7 @@
 /*   By: hhismans <hhismans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/12 18:07:05 by hhismans          #+#    #+#             */
-/*   Updated: 2014/11/16 01:53:43 by hhismans         ###   ########.fr       */
+/*   Updated: 2014/11/16 04:21:57 by hhismans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,38 @@ int		main(void)
 {
 	char *list;
 	int ret;
-	int i;
-	i = 0;
-	while (!i)
+	int fd;
+	int fd_2;
+	fd = open("fichier_test",O_RDONLY);
+	fd_2 = open("fichier_test2",O_RDONLY);
+	ft_putstr("c'est quoi ton prenom ? ");
+	while ((ret = get_next_line(0, &list)) > 0)
 	{
-		ret = get_next_line(0, &list);
+		ft_putstr("ton nom est :");
 	/*	if (ret == 0)
 		{
-			if (!(strcmp(list,"# numEntries: 30991")))
+			if (!(strcmp(list,"# numEntries: 3003")))
 			{
 				ft_putstr("ERROR");
 				break;
 			}
+			ft_putstr("BUFF_SIZE = ");
+			ft_putnbr(i);
+			ft_putendl(" ");
+			i++;
+			close (fd);
+			fd = open("fichier_test",O_RDONLY);
 		}*/
 		ft_putendl(list);
-		i = 1;
+		free(list);
+	//	get_next_line(fd_2, &list);
+	//	ft_putendl(list);
+	//	free(list);
+	}
+
+	while(1)
+	{
+		
 	}
 	/*
 	ft_putstr("\n\ntest 1 ");
