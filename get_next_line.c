@@ -6,7 +6,7 @@
 /*   By: hhismans <hhismans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/12 17:41:02 by hhismans          #+#    #+#             */
-/*   Updated: 2014/11/16 01:29:29 by hhismans         ###   ########.fr       */
+/*   Updated: 2014/11/16 02:41:44 by hhismans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,20 @@ static int		buf_process(int const fd, char **line, char *str)
 {
 	char	buf[BUFF_SIZE + 1];
 	int		ret;
+	char *tmp; //test
 
 	ft_bzero(buf, BUFF_SIZE + 1);
+	tmp = *line;
 	*line = ft_strjoin(*line, str);
+	free(tmp);
 	ft_bzero(str, BUFF_SIZE);
 	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
 		if (ft_strchr(buf, '\n'))
 		{
+			tmp = *line;
 			*line = ft_strnjoin(*line, buf, ft_strchri(buf, '\n'));
+			free(tmp);
 			ft_strcpy(str, ft_strchr(buf, '\n') + 1);
 			return (1);
 		}
@@ -60,13 +65,17 @@ static int		buf_process(int const fd, char **line, char *str)
 	}
 	if (ft_strchr(buf, '\n'))
 	{
+		tmp = *line;
 		*line = ft_strnjoin(*line, buf, ft_strchri(buf, '\n'));
+		free(tmp);
 		ft_strcpy(str, ft_strchr(buf, '\n') + 1);
 		return (1);
 	}
 	else
 	{
+			tmp = *line;
 		*line = ft_strjoin(*line, buf);
+			free(tmp);
 	}
 
 
